@@ -1,0 +1,2 @@
+ninja &&
+./algo_visualizer

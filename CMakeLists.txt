@@ -11,7 +11,7 @@ if(DEFINED ENV{VCPKG_ROOT})
     endif()
 endif()
 
-project(Game)
+project(algo_visualizer)
 find_package(raylib QUIET) # QUIET or REQUIRED
 
 # # if raylib is not found via find_package() and host is UNIX - check other directories
@@ -20,12 +20,12 @@ find_package(raylib QUIET) # QUIET or REQUIRED
 #     find_path(raylib_INCLUDE_DIRS raylib.h
 #         HINTS /usr/local/include /usr/include
 #     )
-    
+
 #     find_library(raylib_LIBRARIES
 #         NAMES raylib libraylib
 #         HINTS /usr/local/lib /usr/lib
 #     )
-    
+
 #     if(raylib_INCLUDE_DIRS AND raylib_LIBRARIES)
 #         set(raylib_FOUND TRUE)
 #         message(STATUS "Raylib found")
@@ -56,7 +56,7 @@ find_package(raylib QUIET) # QUIET or REQUIRED
 # if(UNIX AND NOT APPLE)  # dependencie check linux
 #     find_package(X11 REQUIRED)
 #     find_package(ALSA REQUIRED)
-    
+
 #     if(NOT X11_FOUND OR NOT ALSA_FOUND)
 #         message(FATAL_ERROR "Missing Linux dependencies. Install with:\n"
 #                 "  sudo apt install libasound2-dev libx11-dev libxrandr-dev libxi-dev\n"
@@ -67,7 +67,9 @@ find_package(raylib QUIET) # QUIET or REQUIRED
 # endif()
 
 file(GLOB PROJECT_SOURCES "src/*.cpp")
+# file(GLOB PROJECT_SOURCES "src/*.c")
 file(GLOB PROJECT_INCLUDE "src/*.h")
+file(GLOB PROJECT_INCLUDE "src/*.hpp")
 
 add_executable(${PROJECT_NAME})
 target_sources(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCES})

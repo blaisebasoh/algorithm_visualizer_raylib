@@ -1,59 +1,69 @@
 #include "raylib.h"
-#include <fstream>
-#include <iostream>
+int const SCREEN_WIDTH = 800;
+int const SCREEN_HEIGHT = 600;
 
 // Player entity properties
-typedef struct {
-  float posX = 400;
-  float posY = 400;
-  float width = 100;
-  float height = 40;
-  float _speed = 0.01;
-} Player;
+// typedef struct {
+float p_posX = 100;
+float p_posY = 100;
+float p_width = 80;
+float p_height = 400;
+// float _speed = 100;
 
-void Update();
+void Update(float delta);
+void PhysicsUpdate(float delta);
 
-Player _p;
+// Player _p;
 
 int main(void) {
-  InitWindow(800, 450, "raylib [core] example - basic window");
-
-  // create file to write player properties to
-  std::ofstream file;
-  file.open("config.ini");
+  InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT,
+             "raylib [core] example - basic window");
+  // SetTargetFPS(600);
 
   while (!WindowShouldClose()) {
-    Update();
+    float delta = GetFrameTime();
+
+    Update(delta);
     BeginDrawing();
-    ClearBackground(RAYWHITE);
-    DrawText("Congrats!", 190, 200, 20, LIGHTGRAY);
-    DrawRectangle((_p.posX), (_p.posY), _p.width, _p.height, RED);
+    ClearBackground(BLACK);
+    PhysicsUpdate(delta);
     EndDrawing();
   }
-
-  // save player properties to file and close file
-  file << "PosY = " << _p.posY << "\n";
-  file << "PosX = " << _p.posX << "\n";
-  file.close();
 
   CloseWindow();
 
   return 0;
 }
 
-// This function runs every frame
-void Update() {
+// This function runs every frame (for input actions)
+void Update(float delta) {
 
-  if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
-    _p.posY -= _p._speed;
-  }
-  if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
-    _p.posY += _p._speed;
-  }
-  if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
-    _p.posX -= _p._speed;
-  }
-  if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
-    _p.posX += _p._speed;
+  // if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
+  //   _p.posY -= _p._speed * delta;
+  // }
+  // if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
+  //   _p.posY += _p._speed * delta;
+  // }
+  // if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
+  //   _p.posX -= _p._speed * delta;
+  // }
+  // if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
+  //   _p.posX += _p._speed * delta;
+  // }
+}
+
+// This function runs every frame (for drawing and physics)
+void PhysicsUpdate(float delta) {
+  DrawFPS(10, 10);
+
+  Color colors[10] = {
+      {0, 255, 255, 255},   {255, 255, 255, 255}, {255, 255, 255, 255},
+      {255, 255, 255, 255}, {255, 255, 255, 255}, {255, 255, 255, 255},
+      {255, 255, 255, 255}, {255, 255, 255, 255}, {255, 255, 255, 255},
+      {255, 255, 255, 255},
+  };
+
+  for (int i = 0; i < 10; i++) {
+    DrawRectangle(p_posX + (i * 100), p_posY, p_width, p_height, colors[i]);
   }
 }

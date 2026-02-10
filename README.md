@@ -1,7 +1,7 @@
-### Test makefile
+### example makefile
 
 ```make
-    game:
+    all:
 	    clang main.cpp -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
     clean:
@@ -13,6 +13,11 @@
 ```cmake
     cmake -B build
     cd build
-    cmake --build . --parallel # or make
+    ninja
+    ./algo_visualizer
     # then run binary
 ```
+
+### Notes
+
+[ x ] - Draw vertical rectangles
