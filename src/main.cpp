@@ -1,12 +1,11 @@
 #include "raylib.h"
-int const SCREEN_WIDTH = 800;
+
+int const SCREEN_WIDTH = 1000;
 int const SCREEN_HEIGHT = 600;
 
-// Player entity properties
-// typedef struct {
 float p_posX = 100;
 float p_posY = 100;
-float p_width = 80;
+float p_width = 60;
 float p_height = 400;
 // float _speed = 100;
 
@@ -37,33 +36,25 @@ int main(void) {
 
 // This function runs every frame (for input actions)
 void Update(float delta) {
-
-  // if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
-  //   _p.posY -= _p._speed * delta;
-  // }
-  // if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
-  //   _p.posY += _p._speed * delta;
-  // }
-  // if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
-  //   _p.posX -= _p._speed * delta;
-  // }
-  // if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
-  //   _p.posX += _p._speed * delta;
-  // }
+  // code here
 }
 
 // This function runs every frame (for drawing and physics)
 void PhysicsUpdate(float delta) {
   DrawFPS(10, 10);
 
+  // array of colors to use in drawing rects
   Color colors[10] = {
-      {0, 255, 255, 255},   {255, 255, 255, 255}, {255, 255, 255, 255},
-      {255, 255, 255, 255}, {255, 255, 255, 255}, {255, 255, 255, 255},
-      {255, 255, 255, 255}, {255, 255, 255, 255}, {255, 255, 255, 255},
-      {255, 255, 255, 255},
+      {000, 255, 255, 255}, {255, 000, 200, 255}, {255, 255, 000, 255},
+      {235, 255, 255, 255}, {155, 255, 155, 255}, {200, 255, 025, 255},
+      {000, 100, 255, 255}, {010, 255, 100, 255}, {255, 250, 055, 255},
+      {000, 255, 100, 255},
   };
 
   for (int i = 0; i < 10; i++) {
+
+    // DrawRectangle(p_posX + (i * 90), p_posY + (i * 50), p_width,
+    //               p_height + (i * 50), colors[i]);
     DrawRectangle(p_posX + (i * 100), p_posY, p_width, p_height, colors[i]);
   }
 }
