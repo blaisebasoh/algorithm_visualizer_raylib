@@ -1,60 +1,161 @@
 #include "raylib.h"
+#include <stdlib.h>
+#include <time.h>
 
-int const SCREEN_WIDTH = 1000;
-int const SCREEN_HEIGHT = 600;
+const int SCREEN_WIDTH = 1000;
+const int SCREEN_HEIGHT = 600;
+const int BAR_COUNT = 60;
 
-float p_posX = 100;
-float p_posY = 100;
-float p_width = 60;
-float p_height = 400;
-// float _speed = 100;
+int values[BAR_COUNT];
 
+float sortTimer = 0.0f;
+float sortDelay = 0.01f; // controls how fast the sorting animation plays
+
+int i_index = 0; // global i index for sorting
+int j_index = 0; // global j index for sorting
+int minIndex = 0;
+
+bool isSorting = false;
+bool isPaused = false;
+
+// TODO: Implement these sorting algorithms
+enum SortType { BUBBLE, SELECTION, INSERTION };
+SortType currentSort = BUBBLE;
+
+void InitArray();
+void Draw();
 void Update(float delta);
-void PhysicsUpdate(float delta);
 
-// Player _p;
+void BubbleSort();
+void InsertionSort();
+void SelectionSort();
 
 int main(void) {
-  InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT,
-             "raylib [core] example - basic window");
-  // SetTargetFPS(600);
+  InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Algorithm Visualizer");
+  SetTargetFPS(60);
+
+  srand(time(NULL));
+  InitArray();
 
   while (!WindowShouldClose()) {
     float delta = GetFrameTime();
 
     Update(delta);
+
     BeginDrawing();
     ClearBackground(BLACK);
-    PhysicsUpdate(delta);
+    Draw();
     EndDrawing();
   }
 
   CloseWindow();
-
   return 0;
 }
 
-// This function runs every frame (for input actions)
-void Update(float delta) {
-  // code here
+void InitArray() {
+  for (int i = 0; i < BAR_COUNT; i++) {
+    values[i] = GetRandomValue(20, SCREEN_HEIGHT - 80);
+  }
+
+  i_index = 0;
+  j_index = 0;
+  minIndex = 0;
+  isSorting = true;
 }
 
-// This function runs every frame (for drawing and physics)
-void PhysicsUpdate(float delta) {
+// algorithms implementation for BubbleSort
+void BubbleSort() {
+  if (i_index < BAR_COUNT - 1) {
+    if (j_index < BAR_COUNT - i_index - 1) {
+      if (values[j_index] > values[j_index + 1]) {
+        int temp = values[j_index];
+        values[j_index] = values[j_index + 1];
+        values[j_index + 1] = temp;
+      }
+      j_index++;
+    } else {
+      j_index = 0;
+      i_index++;
+    }
+  } else {
+    isSorting = false;
+  }
+}
+
+// algorithms implementation for SelectionSort
+void SelectionSort() {
+  //
+}
+
+// algorithms implementation for InsertionSort
+void InsertionSort() {
+  //
+}
+
+void Update(float delta) {
+  if (IsKeyPressed(KEY_ONE)) {
+    currentSort = BUBBLE;
+    InitArray();
+  }
+  if (IsKeyPressed(KEY_TWO)) {
+    currentSort = SELECTION;
+    InitArray();
+  }
+  if (IsKeyPressed(KEY_THREE)) {
+    currentSort = INSERTION;
+    InitArray();
+  }
+  if (IsKeyPressed(KEY_R)) {
+    InitArray();
+  }
+  if (IsKeyPressed(KEY_SPACE))
+    isPaused = !isPaused;
+
+  if (!isSorting || isPaused)
+    return;
+
+  sortTimer += delta;
+
+  if (sortTimer >= sortDelay) {
+    sortTimer = 0.0f;
+
+    switch (currentSort) {
+    case BUBBLE:
+      BubbleSort();
+      break;
+    case SELECTION:
+      SelectionSort();
+      break;
+    case INSERTION:
+      InsertionSort();
+      break;
+    }
+  }
+}
+
+void Draw() {
   DrawFPS(10, 10);
 
-  // array of colors to use in drawing rects
-  Color colors[10] = {
-      {000, 255, 255, 255}, {255, 000, 200, 255}, {255, 255, 000, 255},
-      {235, 255, 255, 255}, {155, 255, 155, 255}, {200, 255, 025, 255},
-      {000, 100, 255, 255}, {010, 255, 100, 255}, {255, 250, 055, 255},
-      {000, 255, 100, 255},
-  };
+  float baseLine = SCREEN_HEIGHT - 20; // floor for rectangles
+  float spacing = (float)SCREEN_WIDTH / BAR_COUNT;
+  float barWidth = spacing - 2;
 
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < BAR_COUNT; i++) {
+    float height = (float)values[i];
+    float x = i * spacing;
+    float y = baseLine - height;
 
-    // DrawRectangle(p_posX + (i * 90), p_posY + (i * 50), p_width,
-    //               p_height + (i * 50), colors[i]);
-    DrawRectangle(p_posX + (i * 100), p_posY, p_width, p_height, colors[i]);
+    Color color = WHITE;
+
+    if (i == j_index || i == j_index - 1)
+      color = RED;
+
+    if (!isSorting)
+      color = GREEN;
+
+    DrawRectangle(x, y, barWidth, height, color);
   }
+
+  DrawText("1: Bubble  2: Selection  3: Insertion  R: Reset  SPACE: Pause", 10,
+           30, 20, GRAY);
 }
