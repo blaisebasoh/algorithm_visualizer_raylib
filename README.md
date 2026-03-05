@@ -1,41 +1,39 @@
 ## Simple Algorithm Visualizer using Raylib (C++)
 
-### Build using Make or automate it using CMake.
+## Prerequisites
+- **Compiler**: GCC or Clang
+- **Build System**: CMake 3.11+, Ninja/Make
+- **Dependencies**: vcpkg
 
-### Requirements.
+## Build Instructions
 
-- raylib
-- cmake v3.0+
-- make or ninja
+### Windows (MinGW)
 
-#### Instal raylib using your distributor's packages manager or if on windows, follow [[raylib.com](https://www.raylib.com/)]
+Ensure `VCPKG_ROOT` is set in your environment variables.
+I use vcpkg for all C/C++ libraries I use.
 
-### Building on Linux
 
-### Example makefile
+**Install Dependencies**:
+```ps
+# install raylib using vcpkg
+vcpkg install raylib:x64-mingw-dynamic
 
-```make
-    all:
-	    clang main.cpp -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
-
-    clean:
-	    rm -rf game a.out
+# configure and build
+cmake --preset mingw-debug
+cmake --build build
 ```
-
-### Using cmake
-
-```cmake
-    cmake -B build -G Ninja # don't include '-G Ninja' if using make.
-    cd build
-    ninja
-    ./algo_visualizer
-    # then run binary
+**Linux**
+```bash
+cmake -B build -G Ninja
+cmake --build build
+./build/algo_visualizer
 ```
+Development Environment (LSP)
 
-### Notes
-
-- [x] Draw vertical rectangles
-- [x] Add color and height variety
-- [x] Implement Bubble sort
-- [ ] Implement Insertion sort
-- [ ] Implement Selection sort
+**### Todo**
+- [x] Primitive rendering (Rectangles)
+- [x] Dynamic height scaling/color mapping
+- [x] Bubble Sort (Synchronous animation)
+- [ ] Insertion Sort
+- [ ] Selection Sort
+- [ ] Quick Sort
